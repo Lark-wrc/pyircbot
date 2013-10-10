@@ -14,27 +14,27 @@ Example PRIVMSG command:
 
 import sys
 import socket
-from time import sleep
 
-class Message(self):
+class Message():
 	def __init__(self, mess):
 		data = mess.split(' ')
-		this.command = data[1] #the command of the mess
-		if command == 'PRIVMSG':
-			this.type = 'msg'
-			this.target = data[2]
-			this.message = mess.split(':')[2]
-			this.username = mess.split('!')[0][1:]
-			this.hostname = mess.split('!')[1].split(' ')[0]
+		self.command = data[1] #the command of the mess
+		if self.command == 'PRIVMSG':
+			self.type = 'msg'
+			self.target = data[2]
+			self.message = mess.split(':')[2]
+			self.split_msg = self.message.split(' ')
+			self.nick = mess.split('!')[0][1:]
+			self.hostname = mess.split('!')[1].split(' ')[0]
 		else:
-			this.type = 'nil'
+			self.type = 'nil'
 	
 
-#methods
-def docmd(command=""):
-	s.sendall("PRIVMSG #" + channel + " :\001ACTION does" + command +"\001\r\n")
+def do_cmd(command=""):
+	s.sendall("PRIVMSG #" + channel + " :\001ACTION does " + command +"\001\r\n")
 
-def isCommand(data):
+#outdated isCommand. Left in till the new one is confirmed working.
+"""def isCommand(data):
 	dat = data.split(' ')
 	if dat[1] == 'PRIVMSG' and dat[2] == nick:
 		dat = data.split(':')
@@ -50,13 +50,25 @@ def isCommand(data):
 			print user
 			s.sendall('PRIVMSG ' + user + ' :This is not one of my commands.\r\n')
 
+"""
+
+def processMessage(message):
+	if message.type == 'msg' and message.target == nick:
+		if message.split_msg[0] in commands:
+			commands[message.split_msg[0]](' '.join(message.split_msg[1:]))
+		else:
+			s.sendall('PRIVMSG ' + message.nick + ' :This is not one of my commands.\r\n')
+	if message.type == 'nil':
+		pass
+
+
+
 
 
 #Actual program
 
-
 #Get & declare vars
-commands = {'do':docmd}
+commands = {'do':do_cmd}
 server, nick, channel = '', '', ''
 args = sys.argv[1:]
 if len(args) == 3:
@@ -65,13 +77,12 @@ else:
 	print 'Invalid params, server nick channel'
 	print args
 	exit()
-usert = 'user ' + nick +  ' 8  *' + ' : ' + "Paw's bot\r\n"
-
 
 #make a connection
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((server, 6667))
 
+#possibly factor out, just recieves a few lines before sending.
 i = 0
 while i < 3:
 	data = s.recv(1024)
@@ -81,17 +92,13 @@ while i < 3:
 
 #register with the server and join the channel
 s.sendall('pass secret\r\n')
-
-send = 'nick ' + nick + '\r\n'
-s.sendall(send)
-
-s.sendall(usert)
-
-send = 'JOIN #' + channel + '\r\n'
-s.sendall(send)
+s.sendall('nick ' + nick + '\r\n')
+s.sendall('user ' + nick +  ' 8  *' + ' : ' + "Paw's bot\r\n")
+s.sendall('JOIN #' + channel + '\r\n')
 
 #program loop
 while 1:
 	data = s.recv(1024)
-	isCommand(data)
+	mess = Message(data)
+	processMessage(mess)
 	print data
