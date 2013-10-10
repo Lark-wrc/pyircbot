@@ -22,6 +22,7 @@ Once the bot has joined the channel, just use "/msg <nick> <command> etc..." to 
 * Implement proper command line args
 * Multi channel/server mode
 * Server side commands
+* Loading a command set from a file before starting
 
 	Changelog
 *	1.1	Add the message class, which streamlined once isCommand function into what is now processMessage. 
