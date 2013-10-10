@@ -24,8 +24,13 @@ Once the bot has joined the channel, just use "/msg <nick> <command> etc..." to 
 * Server side commands
 * Loading a command set from a file before starting
 
+<<<<<<< HEAD
 ##Changelog
 *	1.1	Add the message class, which streamlined once isCommand function into what is now processMessage. 
 		Also a few other odd cleanups of lame looking or implemented code.
+=======
+	Changelog
+*	1.1	Add the message class, which streamlined once isCommand function into what is now processMessage. Also a few other odd cleanups of lame looking or implemented code.
+>>>>>>> 77dc23ea538217cc54804845a6330cf7d6dc2117
 
 *	1.0	Basic functionality, Do command was chosen for simplicity.
