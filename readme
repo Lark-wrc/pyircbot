@@ -25,7 +25,6 @@ Once the bot has joined the channel, just use "/msg <nick> <command> etc..." to 
 * Loading a command set from a file before starting
 
 	Changelog
-*	1.1	Add the message class, which streamlined once isCommand function into what is now processMessage. 
-		Also a few other odd cleanups of lame looking or implemented code.
+*	1.1	Add the message class, which streamlined once isCommand function into what is now processMessage. Also a few other odd cleanups of lame looking or implemented code.
 
 *	1.0	Basic functionality, Do command was chosen for simplicity.
