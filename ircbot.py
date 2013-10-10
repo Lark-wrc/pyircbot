@@ -7,11 +7,28 @@
 
 *Refactor to have an object generator that contains fields linking back to
  all the 'parts' of a message. Better extendablity and cleaner.
+ 
+Example PRIVMSG command:
+:natsuPaw_!~piro@24.115.128.97.res-cmts.sesh.ptd.net PRIVMSG #rowancsc :hello world
 """
 
 import sys
 import socket
 from time import sleep
+
+class Message(self):
+	def __init__(self, mess):
+		data = mess.split(' ')
+		this.command = data[1] #the command of the mess
+		if command == 'PRIVMSG':
+			this.type = 'msg'
+			this.target = data[2]
+			this.message = mess.split(':')[2]
+			this.username = mess.split('!')[0][1:]
+			this.hostname = mess.split('!')[1].split(' ')[0]
+		else:
+			this.type = 'nil'
+	
 
 #methods
 def docmd(command=""):
